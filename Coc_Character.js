@@ -1,6 +1,7 @@
 const MAX_SUCESS_RATE = 99;
 const MAX_HP = 20;
 const AUX_VALUE = 15;
+<<<<<<< HEAD
 const STATUS_MAX = 70;
 const STATUS_MIN = 30;
 
@@ -14,6 +15,13 @@ rollDice = (numberOfSides) => {
     return Math.floor((Math.random() * numberOfSides));
 }
 
+=======
+
+getRamdomSucessRateValue = () => {
+    return Math.floor((Math.random() * MAX_SUCESS_RATE));
+};
+
+>>>>>>> 8cc63567202d9d354445fd6f6df19cb14497c51e
 class Participants{
     constructor(name){
         this.name = name;
@@ -39,8 +47,13 @@ class Participants{
 
     showSatus (){
         console.log(`${this.name}'s status:\n`+
+<<<<<<< HEAD
         `attack: ${this.skill.attackSucessRate}\n`+
         `defense: ${this.skill.defenseSucessRate}\n`+
+=======
+        `attack: ${this.equippedWeapon.attackSucessRate}\n`+
+        `defense: ${this.equippedArmor.defenseSucessRate}\n`+
+>>>>>>> 8cc63567202d9d354445fd6f6df19cb14497c51e
         `observe: ${this.skill.observeSucessRate}\n`+
         `listen: ${this.skill.listenSucessRate}\n`+
         `HP: ${this.health.currentHealth}/${this.health.maxHealth}`
@@ -78,6 +91,7 @@ class Thinker extends Participants{
     }
 }
 
+<<<<<<< HEAD
 p1 = new Acter(`player1`);
 p2 = new Thinker(`player2`);
 
@@ -94,3 +108,23 @@ fightTest = (p1, p2) => {
     p2.showSatus();
 }
 fightTest(p1, p2);
+=======
+test = () =>{
+    p1 = new Acter(`p1`);
+    p2 = new Thinker(`p2`);
+
+    p1.showSatus();
+    p2.showSatus();
+
+    if(p1.equippedWeapon.attackSucessRate > 50){
+        p2.takeInjuries(3);
+        console.log(`p1 get injuried.`);
+    }
+    else{
+        p1.takeInjuries(3);
+        console.log(`p1 get injuried.`);
+    }
+}
+
+test();
+>>>>>>> 8cc63567202d9d354445fd6f6df19cb14497c51e

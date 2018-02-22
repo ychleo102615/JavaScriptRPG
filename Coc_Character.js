@@ -1,5 +1,6 @@
 const MAX_SUCESS_RATE = 99;
-const AUX_VALUE = 20;
+const MAX_HP = 20;
+const AUX_VALUE = 15;
 
 getRamdomSucessRateValue = () => {
     return Math.floor((Math.random() * MAX_SUCESS_RATE));
@@ -21,14 +22,19 @@ class Participants{
             listenSucessRate: getRamdomSucessRateValue()
         };
         this.health = {
-            maxHealth: 10,
-            currentHealth: 10
+            maxHealth: MAX_HP,
+            currentHealth: MAX_HP
         };
     }
 
     showSatus (){
-        console.log(`${this.name}'s status:\n
-                    attack: ${this.equippedWeapon.attackSucessRate}`);
+        console.log(`${this.name}'s status:\n`+
+        `attack: ${this.equippedWeapon.attackSucessRate}\n`+
+        `defense: ${this.equippedArmor.defenseSucessRate}\n`+
+        `observe: ${this.skill.observeSucessRate}\n`+
+        `listen: ${this.skill.listenSucessRate}\n`+
+        `HP: ${this.health.currentHealth}/${this.health.maxHealth}`
+        );
     }
 
     takeInjuries (value) {
@@ -65,8 +71,10 @@ test = () =>{
     p1.showSatus();
     p2.showSatus();
 
-    if(p1.equippedWeapon.attackSucessRate > 50)
+    if(p1.equippedWeapon.attackSucessRate > 50){
         p2.takeInjuries(3);
+        console.log(`p1 get injuried.`);
+    }
     else{
         p1.takeInjuries(3);
         console.log(`p1 get injuried.`);

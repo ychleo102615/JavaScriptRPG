@@ -1,130 +1,93 @@
 const MAX_SUCESS_RATE = 99;
 const MAX_HP = 20;
 const AUX_VALUE = 15;
-<<<<<<< HEAD
 const STATUS_MAX = 70;
 const STATUS_MIN = 30;
 
-// give a basic status range
-getRamdomSucessRateValue = () => {
-    //return Math.floor((Math.random() * MAX_SUCESS_RATE));
-    return Math.floor((Math.random() * (STATUS_MAX - STATUS_MIN))) + STATUS_MIN;
-};
-
-rollDice = (numberOfSides) => {
-    return Math.floor((Math.random() * numberOfSides));
+rollDiceXtime = (numberOfSides, times = 1) => {
+    sum = 0;
+    for(i=0;i<times;i++){
+        sum += Math.floor((Math.random() * numberOfSides)) + 1;
+    }
+    return sum;
 }
 
-=======
-
-getRamdomSucessRateValue = () => {
-    return Math.floor((Math.random() * MAX_SUCESS_RATE));
-};
-
->>>>>>> 8cc63567202d9d354445fd6f6df19cb14497c51e
-class Participants{
+class Player{
     constructor(name){
         this.name = name;
-        this.equippedWeapon = {
-            maxDamage : 0,
-            minDamage : 0,
-            attackSucessRate: getRamdomSucessRateValue()
-        };
-        this.equippedArmor = {
-            defenseSucessRate: getRamdomSucessRateValue()
-        };
-        this.skill = {
-            attackSucessRate: getRamdomSucessRateValue(),
-            defenseSucessRate: getRamdomSucessRateValue(),
-            observeSucessRate: getRamdomSucessRateValue(),
-            listenSucessRate: getRamdomSucessRateValue()
-        };
-        this.health = {
-            maxHealth: MAX_HP,
-            currentHealth: MAX_HP
-        };
+        this.status = {
+            STR: 0,
+            DEX: 0,
+            CON: 0,
+            APP: 0,
+            POW: 0,
+            SIZ: 0,
+            INT: 0,
+            EDU: 0
+        }
+        this.ability = {
+            SAN: 0,
+            HP: 0,
+            MP: 0,
+            //DB: 0,
+            Idea: 0,
+            Luck: 0,
+            Know: 0
+        }
     }
 
-    showSatus (){
-        console.log(`${this.name}'s status:\n`+
-<<<<<<< HEAD
-        `attack: ${this.skill.attackSucessRate}\n`+
-        `defense: ${this.skill.defenseSucessRate}\n`+
-=======
-        `attack: ${this.equippedWeapon.attackSucessRate}\n`+
-        `defense: ${this.equippedArmor.defenseSucessRate}\n`+
->>>>>>> 8cc63567202d9d354445fd6f6df19cb14497c51e
-        `observe: ${this.skill.observeSucessRate}\n`+
-        `listen: ${this.skill.listenSucessRate}\n`+
-        `HP: ${this.health.currentHealth}/${this.health.maxHealth}`
-        );
+    getStastics(){
+        this.message = ``;
+        for(this.trait in this.status)
+            this.message += `${this.trait}: ${this.status[this.trait]}\n`; 
+        for(this.trait in this.ability)
+            this.message += `${this.trait}: ${this.ability[this.trait]}\n`;
+        
+        return this.message;
     }
 
-    takeInjuries (value) {
-        this.health.currentHealth -= value;
-        if(this.health.currentHealth < 0)
-        this.reportDeath();
+    randomizeStatusAndAbility(){
+        this.status.STR = rollDiceXtime(6, 3);
+        this.status.DEX = rollDiceXtime(6, 3);
+        this.status.CON = rollDiceXtime(6, 3);
+        this.status.APP = rollDiceXtime(6, 3);
+        this.status.POW = rollDiceXtime(6, 3);
+        this.status.SIZ = rollDiceXtime(6, 2) + 6;
+        this.status.INT = rollDiceXtime(6, 2) + 6;
+        this.status.EDU = rollDiceXtime(6, 3) + 3;
+
+        this.ability.Idea = this.status.INT * 5;
+        this.ability.Luck = this.status.POW * 5;
+        this.ability.Know = this.status.EDU * 5;
+        this.ability.SAN = this.status.POW * 5;
+        this.ability.HP = Math.ceil((this.status.CON + this.status.SIZ)/2);
+        this.ability.MP = this.status.POW;
     }
 
-    reportDeath () {
-        console.log(`${this.name} is dead.`);
-    }
-
-    isAlive () {
-        return this.health.currentHealth > 0;
-    }
-}
-
-class Acter extends Participants{
-    constructor(name){
-        super(name);
-        this.skill.attackSucessRate += AUX_VALUE;
-        this.skill.defenseSucessRate += AUX_VALUE;
-    }
-}
-
-class Thinker extends Participants{
-    constructor(name){
-        super(name);
-        this.skill.observeSucessRate += AUX_VALUE;
-        this.skill.listenSucessRate += AUX_VALUE;
+    DamageBonus(){
+        this.p = this.status.STR + this.status.SIZ;
+        if(this.p <= 12)
+            return -rollDiceXtime(4);
+        else if(this.p <= 16)
+            return -rollDiceXtime(6);
+        else if(this.p <= 24)
+            return 0;
+        else if(this.p <= 32)
+            return rollDiceXtime(4);
+        else if(this.p <= 40)
+            return rollDiceXtime(6);
     }
 }
 
-<<<<<<< HEAD
-p1 = new Acter(`player1`);
-p2 = new Thinker(`player2`);
-
-fightTest = (p1, p2) => {
-    while(p1.isAlive() && p2.isAlive() ){
-        if(p1.isAlive() && rollDice(MAX_SUCESS_RATE) < p1.skill.attackSucessRate)
-            p2.takeInjuries(3);
-        if(p2.isAlive() && rollDice(MAX_SUCESS_RATE) < p2.skill.attackSucessRate)
-            p1.takeInjuries(3);
+test = () => {
+    a = new Player(`Apple`);
+    a.randomizeStatusAndAbility();
+    showStastics = () =>{
+        console.log(`Show Stastics of ${a.name}:`)
+        console.log(a.getStastics());
     }
-
-    console.log(`Result:`);
-    p1.showSatus();
-    p2.showSatus();
-}
-fightTest(p1, p2);
-=======
-test = () =>{
-    p1 = new Acter(`p1`);
-    p2 = new Thinker(`p2`);
-
-    p1.showSatus();
-    p2.showSatus();
-
-    if(p1.equippedWeapon.attackSucessRate > 50){
-        p2.takeInjuries(3);
-        console.log(`p1 get injuried.`);
-    }
-    else{
-        p1.takeInjuries(3);
-        console.log(`p1 get injuried.`);
-    }
+    showStastics();
+    console.log(`${a.name} gets ${a.DamageBonus()} damage bonus.`);
 }
 
 test();
->>>>>>> 8cc63567202d9d354445fd6f6df19cb14497c51e

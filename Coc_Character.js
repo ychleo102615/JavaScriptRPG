@@ -81,12 +81,15 @@ class Player{
 
 test = () => {
     a = new Player(`Apple`);
+    b = new Player(`Banana`);
     a.randomizeStatusAndAbility();
-    showStastics = () =>{
-        console.log(`Show Stastics of ${a.name}:`)
-        console.log(a.getStastics());
+    b.randomizeStatusAndAbility();
+    showStastics = (character) =>{
+        console.log(`Show Stastics of ${character.name}:`)
+        console.log(character.getStastics());
     }
-    showStastics();
+    showStastics(a);
+    showStastics(b);
     console.log(`${a.name} gets ${a.DamageBonus()} damage bonus.`);
 }
 
